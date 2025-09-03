@@ -4,28 +4,31 @@ import type { Event } from "@eventSource/types.ts";
 
 export const bus = new EventEmitter();
 
-const logEvent = async (event: Event) => {
+const getModel = async (table: string) => {
     const db = await getDB();
-    await db.run(
-        "INSERT INTO event_logs (type, payload) VALUES (?, ?)",
-        event.type,
-        JSON.stringify(event.payload),
-    );
+    const model = db.models[table];
+    if (!model) {
+        throw new Error(`Model not found: ${table}`);
+    }
+    return model;
+};
+
+const logEvent = async (event: Event) => {
+    const model = await getModel("event_logs");
+    await model.create({
+        type: event.type,
+        payload: JSON.stringify(event.payload),
+    });
 };
 
 export const create = async (
     table: string,
     data: Record<string, unknown>,
 ) => {
-    const db = await getDB();
-    const keys = Object.keys(data);
-    const placeholders = keys.map(() => "?").join(", ");
-    const values = Object.values(data);
-    const result = await db.run(
-        `INSERT INTO ${table} (${keys.join(", ")}) VALUES (${placeholders})`,
-        values,
-    );
-    const event: Event = { type: `${table}.created`, payload: data };
+    const model = await getModel(table);
+    const instance = await model.create(data);
+    const result = instance.toJSON() as Record<string, unknown>;
+    const event: Event = { type: `${table}.created`, payload: result };
     bus.emit(event.type, event);
     await logEvent(event);
     return result;
@@ -34,42 +37,32 @@ export const create = async (
 export const update = async (
     table: string,
     data: Record<string, unknown>,
-    where: string,
-    params: any[] = [],
+    where: Record<string, unknown>,
 ) => {
-    const db = await getDB();
-    const assignments = Object.keys(data)
-        .map((k) => `${k} = ?`)
-        .join(", ");
-    const values: any[] = [...Object.values(data), ...params];
-    await db.run(
-        `UPDATE ${table} SET ${assignments} WHERE ${where}`,
-        values,
-    );
-    const event: Event = { type: `${table}.updated`, payload: { data, where, params } };
+    const model = await getModel(table);
+    await model.update(data, { where });
+    const event: Event = { type: `${table}.updated`, payload: { data, where } };
     bus.emit(event.type, event);
     await logEvent(event);
 };
 
 export const remove = async (
     table: string,
-    where: string,
-    params: any[] = [],
+    where: Record<string, unknown>,
 ) => {
-    const db = await getDB();
-    await db.run(`DELETE FROM ${table} WHERE ${where}`, params);
-    const event: Event = { type: `${table}.deleted`, payload: { where, params } };
+    const model = await getModel(table);
+    await model.destroy({ where });
+    const event: Event = { type: `${table}.deleted`, payload: { where } };
     bus.emit(event.type, event);
     await logEvent(event);
 };
 
 export const find = async (
     table: string,
-    where = "1=1",
-    params: any[] = [],
+where: Record<string, unknown> = {},
 ) => {
-    const db = await getDB();
-    return db.all(`SELECT * FROM ${table} WHERE ${where}`, params);
+    const model = await getModel(table);
+    return model.findAll({ where, raw: true });
 };
 
 export const init = () => {

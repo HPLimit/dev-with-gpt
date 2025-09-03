@@ -5,29 +5,29 @@ import path from "node:path";
 export const init = async () => {
     // Ensure database schema is ready
     await migrateAll();
- // Clear existing data
-    await remove("bookings", "1=1");
-    await remove("users", "1=1");
+// Clear existing data
+    await remove("bookings", {});
+    await remove("users", {});
 
     // Seed sample users
-    const { lastID: aliceId } = await create("users", {
+    const alice = (await create("users", {
         name: "Alice",
         email: "alice@example.com",
-    });
-    const { lastID: bobId } = await create("users", {
+    })) as any;
+    const bob = (await create("users", {
         name: "Bob",
         email: "bob@example.com",
-    });
+    })) as any;
 
     // Seed sample bookings linked to users
     await create("bookings", {
-        user_id: aliceId,
+        user_id: alice.id,
         source_id: 1,
         amount: 100.0,
         created_at: Date.now(),
     });
     await create("bookings", {
-        user_id: bobId,
+        user_id: bob.id,
         source_id: 2,
         amount: 200.0,
         created_at: Date.now(),
@@ -38,7 +38,10 @@ export const init = async () => {
 
 // Execute immediately when run as a script
 const runAsScript =
-    process.argv[1] && path.normalize(process.argv[1]).endsWith(path.join("db", "seed", "index.ts"));
+    process.argv[1] &&
+    path
+        .normalize(process.argv[1])
+        .endsWith(path.join("db", "seed", "index.ts"));
 
 if (runAsScript) {
     init().catch((err) => {

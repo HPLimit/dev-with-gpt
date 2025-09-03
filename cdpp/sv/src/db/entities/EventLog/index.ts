@@ -1,15 +1,16 @@
+import { DataTypes } from "sequelize";
 import { getDB } from "@db/index.js";
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
-import { fileURLToPath } from "url";
-import path from "node:path";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const schema = readFileSync(join(__dirname, "schema.sql"), "utf8");
-
-export const initSchema = async () => {
+export const initModel = async () => {
     const db = await getDB();
-    await db.exec(schema);
-    console.log("✅ event_logs table ready");
+    db.define(
+        "event_logs",
+        {
+            id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+            type: { type: DataTypes.STRING },
+            payload: { type: DataTypes.TEXT },
+            created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
+        },
+        { timestamps: false },
+    );
 };

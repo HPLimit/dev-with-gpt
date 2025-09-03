@@ -1,12 +1,15 @@
-import {Database, open} from "sqlite";
-import {CONFIG} from "@db/conf.js";
+import { Sequelize } from "sequelize";
+import { DB_PATH } from "@db/conf.js";
 
-
-let db: Database | null = null;
+let db: Sequelize | null = null;
 
 export const getDB = async () => {
     if (db === null) {
-        db = await open(CONFIG);
+        db = new Sequelize({
+            dialect: "sqlite",
+            storage: DB_PATH,
+            logging: false,
+        });
     }
     return db;
 };

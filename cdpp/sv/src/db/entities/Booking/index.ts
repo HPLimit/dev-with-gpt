@@ -1,16 +1,17 @@
-import {getDB} from "@db/index.js";
-import {readFileSync} from "node:fs";
-import {join} from "node:path";
-import {fileURLToPath} from "url";
-import path from "path";
+import { DataTypes } from "sequelize";
+import { getDB } from "@db/index.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const schema = readFileSync(join(__dirname, "schema.sql"), "utf8");
-
-export const initSchema = async () => {
+export const initModel = async () => {
     const db = await getDB();
-
-    await db.exec(schema);
-    console.log("✅ bookings table ready");
+    db.define(
+        "bookings",
+        {
+            id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+            user_id: { type: DataTypes.INTEGER },
+            source_id: { type: DataTypes.INTEGER },
+            amount: { type: DataTypes.FLOAT },
+            created_at: { type: DataTypes.BIGINT },
+        },
+        { timestamps: false },
+    );
 };
