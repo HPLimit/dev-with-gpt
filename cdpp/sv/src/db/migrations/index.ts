@@ -1,5 +1,7 @@
-import {createUserTable} from "@db/entities/User.js";
+import {initSchema as initUser} from "@db/entities/User/index.ts";
+import {initSchema as initBooking} from "@db/entities/Booking/index.js";
 
 export async function migrateAll() {
-    await createUserTable();
+    await initUser();
+    await initBooking();
 }
