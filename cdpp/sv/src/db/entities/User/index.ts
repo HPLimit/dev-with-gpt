@@ -1,12 +1,5 @@
-import {getDB} from "@db/index.js";
-import {readFileSync} from "node:fs";
-import {join} from "node:path";
-import {fileURLToPath} from "url";
-import path from "path";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const schema = readFileSync(join(__dirname, "schema.sql"), "utf8");
+import { DataTypes } from "sequelize";
+import { getDB } from "@db/index.js";
 
 export interface User {
     id: number;
@@ -14,9 +7,15 @@ export interface User {
     email: string;
 }
 
-export const initSchema = async () => {
+export const initModel = async () => {
     const db = await getDB();
-
-    await db.exec(schema);
-    console.log("✅ users table ready");
+    db.define(
+        "users",
+        {
+            id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+            name: { type: DataTypes.STRING },
+            email: { type: DataTypes.STRING },
+        },
+        { timestamps: false },
+    );
 };

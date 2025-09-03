@@ -4,13 +4,12 @@ import { getDB } from "@db/index.js";
 export const initModel = async () => {
     const db = await getDB();
     db.define(
-        "bookings",
+        "event_logs",
         {
             id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-            user_id: { type: DataTypes.INTEGER },
-            source_id: { type: DataTypes.INTEGER },
-            amount: { type: DataTypes.FLOAT },
-            created_at: { type: DataTypes.BIGINT },
+            type: { type: DataTypes.STRING },
+            payload: { type: DataTypes.TEXT },
+            created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
         },
         { timestamps: false },
     );

@@ -1,7 +1,6 @@
-import path from "path";
-import fs from "fs";
+import path from "node:path";
+import fs from "node:fs";
 import { fileURLToPath } from "url";
-import sqlite3 from "sqlite3";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,7 +15,4 @@ if (!fs.existsSync(dbPath)) {
     fs.writeFileSync(dbPath, "");
 }
 
-export const CONFIG = {
-    filename: dbPath,
-    driver: sqlite3.Database
-}
+export const DB_PATH = dbPath;
