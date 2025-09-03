@@ -1,16 +1,15 @@
 import { DataTypes } from "sequelize";
-import { getDB } from "@db/index.js";
+import Conn from "@db/index.js";
 
-export const initModel = async () => {
-    const db = await getDB();
-    db.define(
-        "event_logs",
-        {
-            id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-            type: { type: DataTypes.STRING },
-            payload: { type: DataTypes.TEXT },
-            created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
-        },
-        { timestamps: false },
-    );
-};
+export const MODEL_EVENT_LOG = "event_logs";
+
+export default Conn.define(
+    MODEL_EVENT_LOG,
+    {
+        id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+        type: { type: DataTypes.STRING },
+        payload: { type: DataTypes.TEXT },
+        created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
+    },
+    { timestamps: false, tableName: MODEL_EVENT_LOG }
+);

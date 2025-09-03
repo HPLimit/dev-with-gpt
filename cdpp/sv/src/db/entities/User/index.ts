@@ -1,21 +1,14 @@
 import { DataTypes } from "sequelize";
-import { getDB } from "@db/index.js";
+import Conn from "@db/index.ts";
 
-export interface User {
-    id: number;
-    name: string;
-    email: string;
-}
+export const MODEL_USER = "users";
 
-export const initModel = async () => {
-    const db = await getDB();
-    db.define(
-        "users",
-        {
-            id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-            name: { type: DataTypes.STRING },
-            email: { type: DataTypes.STRING },
-        },
-        { timestamps: false },
-    );
-};
+export default Conn.define(
+    MODEL_USER,
+    {
+        id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+        name: { type: DataTypes.STRING },
+        email: { type: DataTypes.STRING, unique: true },
+    },
+    { timestamps: true, tableName: MODEL_USER },
+)

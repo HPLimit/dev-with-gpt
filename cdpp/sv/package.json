@@ -8,9 +8,10 @@
     "sv:type-check": "tsc --noEmit",
     "sv:build": "tsc && tsc-alias",
     "sv:prod": "node dist/index.js",
-    "sv:seed": "tsx src/db/seed/index.ts"
+    "sv:migrate": "node dist/index.js",
+    "sv:seed": "tsx src/scripts/db-scripts.ts",
+    "sv:seed:fresh": "tsx src/scripts/db-scripts.ts"
   },
-
   "dependencies": {
     "@apollo/server": "^5.0.0",
     "body-parser": "^2.2.0",
