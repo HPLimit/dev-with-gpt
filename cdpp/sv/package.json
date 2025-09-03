@@ -10,7 +10,8 @@
     "sv:prod": "node dist/index.js",
     "sv:migrate": "node dist/index.js",
     "sv:seed": "tsx src/scripts/db-scripts.ts",
-    "sv:seed:fresh": "tsx src/scripts/db-scripts.ts"
+    "sv:seed:fresh": "tsx src/scripts/db-scripts.ts",
+    "sv:evs": "tsx src/scripts/evs.ts"
   },
   "dependencies": {
     "@apollo/server": "^5.0.0",

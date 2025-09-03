@@ -22,6 +22,12 @@
     - Nhận sự kiện từ Event Source hoặc cron/timer.
     - Map trigger đến workflow.
 
+4. **Giao diện CLI evs**
+    - Cho phép điều khiển module event-source tạo nhanh event để trigger workflow.
+    - Ví dụ:
+        - `./evs create <tableName> [-field1=] [-field2=] ...`
+        - `./evs update <tableName> -id= [-field1=] [-field2=] ...`
+
 ## Giai đoạn 3 – Giám sát & Logging
 1. **Logging module**
     - Ghi nhật ký workflow run, step run, lỗi.
