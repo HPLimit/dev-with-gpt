@@ -7,7 +7,8 @@
     "sv:start": "tsx watch src/index.ts",
     "sv:type-check": "tsc --noEmit",
     "sv:build": "tsc && tsc-alias",
-    "sv:prod": "node dist/index.js"
+    "sv:prod": "node dist/index.js",
+    "sv:seed": "tsx src/db/seed/index.ts"
   },
 
   "dependencies": {
