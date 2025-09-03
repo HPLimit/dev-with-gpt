@@ -1,5 +1,6 @@
 import { getDB } from "@db/index.js";
 import { migrateAll } from "@db/migrations/index.js";
+import path from 'node:path';
 
 export const init = async () => {
     // Ensure database schema is ready
@@ -33,8 +34,10 @@ export const init = async () => {
 };
 
 // Execute immediately when run as a script
-if (process.argv[1] && process.argv[1].endsWith("db/seed/index.ts")) {
-    init().catch((err) => {
-        console.error("❌ Failed to seed data:", err);
-    });
+const runAsScript =
+    process.argv[1] &&
+    path.normalize(process.argv[1]).endsWith(path.join('db', 'seed', 'index.ts'));
+
+if (runAsScript) {
+    init().catch((err) => console.error('❌ Failed to seed data:', err));
 }
