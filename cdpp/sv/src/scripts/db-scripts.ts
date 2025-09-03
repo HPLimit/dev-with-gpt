@@ -41,7 +41,7 @@ async function main() {
     });
 
     console.log("✅ Sample data seeded");
-};
+}
 
 const runAsScript = process.argv[1] && path.normalize(process.argv[1])
     .endsWith(path.join("scripts", "db-scripts.ts"));
