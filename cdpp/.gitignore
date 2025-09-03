@@ -19,6 +19,7 @@ build/
 .next/
 .cache/
 .vite/
+.data/
 coverage/
 *.tsbuildinfo
 

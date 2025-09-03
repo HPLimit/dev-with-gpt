@@ -1,24 +1,29 @@
 {
   "name": "sv",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "type": "module",
+  "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "sv:start": "tsx watch src/index.ts",
+    "sv:type-check": "tsc --noEmit",
+    "sv:build": "tsc && tsc-alias",
+    "sv:prod": "node dist/index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
+
   "dependencies": {
-    "apollo-server-express": "^3.13.0",
-    "express": "^4.21.2",
-    "graphql": "^16.11.0"
+    "@apollo/server": "^5.0.0",
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "graphql": "^16.11.0",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
     "@types/node": "^24.3.0",
-    "ts-node": "^10.9.2",
+    "@types/sqlite3": "^3.1.11",
+    "tsc-alias": "^1.8.16",
+    "tsx": "^4.20.5",
     "typescript": "^5.9.2"
   }
 }
