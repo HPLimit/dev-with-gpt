@@ -9,7 +9,11 @@
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "paths": {
-      "@db/*": ["db/*"]
+      "@db/*": ["db/*"],
+      "@actions/*": ["actions/*"],
+      "@eventSource/*": ["event-source/*"],
+      "@logging/*": ["logging/*"],
+      "@workflowEngine/*": ["workflow-engine/*"],
     },
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
