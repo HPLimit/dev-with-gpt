@@ -5,7 +5,7 @@ import path from "node:path";
 export const init = async () => {
     // Ensure database schema is ready
     await migrateAll();
-    // Clear existing data
+// Clear existing data
     await remove("bookings", {});
     await remove("users", {});
 

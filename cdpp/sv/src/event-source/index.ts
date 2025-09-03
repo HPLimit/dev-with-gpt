@@ -59,7 +59,7 @@ export const remove = async (
 
 export const find = async (
     table: string,
-    where: Record<string, unknown> = {},
+where: Record<string, unknown> = {},
 ) => {
     const model = await getModel(table);
     return model.findAll({ where, raw: true });
