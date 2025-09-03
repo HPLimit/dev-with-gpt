@@ -5,7 +5,7 @@ import path from "node:path";
 export const init = async () => {
     // Ensure database schema is ready
     await migrateAll();
-    // Clear existing data
+ // Clear existing data
     await remove("bookings", "1=1");
     await remove("users", "1=1");
 
@@ -38,10 +38,7 @@ export const init = async () => {
 
 // Execute immediately when run as a script
 const runAsScript =
-    process.argv[1] &&
-    path
-        .normalize(process.argv[1])
-        .endsWith(path.join("db", "seed", "index.ts"));
+    process.argv[1] && path.normalize(process.argv[1]).endsWith(path.join("db", "seed", "index.ts"));
 
 if (runAsScript) {
     init().catch((err) => {
