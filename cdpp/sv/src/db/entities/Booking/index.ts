@@ -14,7 +14,3 @@ export default Conn.define(
     },
     {timestamps: false, tableName: MODEL_BOOKING},
 );
-
-export function getModel(modelName: string) {
-    return Conn.models[modelName]
-}

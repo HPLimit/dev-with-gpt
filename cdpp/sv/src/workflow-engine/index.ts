@@ -81,9 +81,7 @@ export const init = async () => {
 
     for (const trigger of triggers) {
         bus.on(trigger.type, async (event: Event) => {
-            const wf = await workflowModel.findByPk(trigger.workflow_id, {
-                raw: true,
-            });
+            const wf = await workflowModel.findByPk(trigger.workflow_id);
             if (!wf) return;
             await runWorkflow(wf, event);
         });
