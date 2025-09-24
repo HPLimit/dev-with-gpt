@@ -1,12 +1,12 @@
-import { bus } from '@eventSource/index.js';
-import { getModel } from '@db/index.js';
-import { MODEL_TRIGGER } from '@db/entities/Trigger/index.js';
-import { MODEL_WORKFLOW } from '@db/entities/Workflow/index.js';
-import { MODEL_WORKFLOW_RUN } from '@db/entities/WorkflowRun/index.js';
-import { MODEL_STEP_RUN } from '@db/entities/StepRun/index.js';
-import type { Event } from '@eventSource/types.js';
-import type { Workflow, WorkflowContext } from './types.js';
-import { getAction, init as initActions } from '@actions/index.js';
+import {bus} from '@eventSource/index.js';
+import {getModel} from '@db/index.js';
+import {MODEL_TRIGGER} from '@db/entities/Trigger/index.js';
+import {MODEL_WORKFLOW} from '@db/entities/Workflow/index.js';
+import {MODEL_WORKFLOW_RUN} from '@db/entities/WorkflowRun/index.js';
+import {MODEL_STEP_RUN} from '@db/entities/StepRun/index.js';
+import type {Event} from '@eventSource/types.js';
+import type {Workflow, WorkflowContext} from './types.js';
+import {getAction, init as initActions} from '@actions/index.js';
 
 const runWorkflow = async (workflowRow: any, event?: Event) => {
     const workflow: Workflow = workflowRow.definition;
@@ -19,7 +19,7 @@ const runWorkflow = async (workflowRow: any, event?: Event) => {
         started_at: new Date(),
     });
 
-    const context: WorkflowContext = { workflow, event, state: {} };
+    const context: WorkflowContext = {workflow, event, state: {}};
 
     for (const step of workflow.steps) {
         const stepRun = await stepRunModel.create({
@@ -44,7 +44,7 @@ const runWorkflow = async (workflowRow: any, event?: Event) => {
                     await stepRun.update({
                         status: 'failed',
                         finished_at: new Date(),
-                        output: { error: (err as Error).message },
+                        output: {error: (err as Error).message},
                     });
                     await workflowRun.update({
                         status: 'failed',
@@ -77,7 +77,7 @@ export const init = async () => {
     const triggerModel = getModel(MODEL_TRIGGER);
     const workflowModel = getModel(MODEL_WORKFLOW);
 
-    const triggers = await triggerModel.findAll({ raw: true });
+    const triggers = await triggerModel.findAll({raw: true});
 
     for (const trigger of triggers) {
         bus.on(trigger.type, async (event: Event) => {
@@ -90,5 +90,5 @@ export const init = async () => {
     }
 };
 
-export { runWorkflow };
+export {runWorkflow};
 

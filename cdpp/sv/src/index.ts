@@ -1,5 +1,5 @@
 import express from "express";
-import { init as initWorkflow } from "@workflowEngine/index.js";
+import {init as initWorkflow} from "@workflowEngine/index.js";
 
 const app = express();
 
