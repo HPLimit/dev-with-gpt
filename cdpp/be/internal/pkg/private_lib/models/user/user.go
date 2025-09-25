@@ -10,7 +10,7 @@ type User struct {
 	Email    string `gorm:"uniqueIndex;size:128;not null"`
 	Password string `gorm:"size:256;not null"`
 
-	models.BaseModel
+	models.TriggerableModel
 	models.Timestamps
 	models.SoftDelete
 }
